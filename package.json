@@ -1,0 +1,23 @@
+{
+  "name": "primmo-app",
+  "version": "1.0.0",
+  "description": "Primmo",
+  "main": "primmo-app.js",
+  "scripts": {
+    "start": "node primmo-app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Me",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "express": "^4.15.3",
+    "jsonwebtoken": "^8.0.1",
+    "mongodb": "^2.2.30",
+    "mongoose": "^4.11.5",
+    "morgan": "^1.9.0"
+  },
+  "devDependencies": {
+    "mocha": "^3.4.2"
+  }
+}

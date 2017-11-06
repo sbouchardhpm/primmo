@@ -1,0 +1,335 @@
+﻿
+Définitions:
+
+[Locataire]
+	ID		Identifiant unique (par client)
+	PRENOM		Prénom du locataire
+	NOMLOC		Nom du locataire
+	CELLULAIRE	Téléphone cellulaire
+	RESIDENCE	Téléphone à la résidence
+	POSTERES	No de poste téléphonique à la résidence
+	BUREAU		Téléphone au bureau
+	POSTE		No de poste au bureau
+	EMAIL		Courriel
+	LOYACTU		Loyer actuel (bail courant)
+	LOYEVEN		Loyer éventuel (bail futur)
+	DATEENT		Date d'entrée/début du bail
+	DATEEXP		Date de fin de bail
+	DATEDEP		Date de départ	
+	SEXE		Sexe
+	MONTREC		Montant à recevoir
+	LDA			Type de locataire (L=Régulier, D=Délinquant(Historique), A=Attente (Futur)
+	
+	
+[Unite]
+	ID			Identifiant unique (par client)
+	UNITE		Code de l'unité/appartement
+	NBPIECE		Nombre de pièces
+	ETAGE		Étage
+	CODEOCC		Code d'occupation (Loué, Vacant, Réservé, etc)
+	TYPLOG		Type de logement
+	LOYACTU		Loyer actuel
+	LOYPROJ		Loyer projeté
+	VALMARCHE	Valeur du loyer au marché
+	SFICIE		Superficie
+	ORIENT		Orientation géographique
+	MEUBLE		Meublé ?
+	SEMIMEUBLE	Semi-Meublé ?
+	LAVEUSE		Entrée laveuse-sécheuse ?
+	CHAUF		Chauffage inclus ?
+	ELECT		Électricité comprise?
+	STATION		Stationnement inclus ?
+	EAUCHAUDE	Eau chaude incluse ?
+	PATIO		Porte patio au logement ?
+	DERNOCC		Dernière occupation de l'unité
+	ACTIF		Actif ?
+	Locataires	Array de [Locataire]
+
+[ImcBailLoc]
+	ID			Identifiant unique du bail(par client)
+	CodeLoc		Code de locataire
+	NomLoc		Nom du locataire
+	RaisonSoc	Raison sociale du locataire
+	AttFact		À l'attention de
+	NomFact		Nom pour la facturation
+	AdrFact1	Rue
+	AdrFact2	Ville
+	AdrFact3	Province
+	CPFact		Code postal
+	TelFact		Téléphone
+	EmailFact	Courriel
+	NomResp		Nom du responsable
+	TelResp		Téléphone #1 du responsable
+	TelResp2	Téléphone #2 du responsable
+	Langue		Langue de correspondance
+	LHA			Type de locataire (L=Régulier, H=Historique, A=Attente (Futur)
+	DateEnt		Date de prise de possession
+	DateDeb		Date de début du bail
+	DateDebTer	Date de début du terme en cours
+	DateFin		Date d'échéance du taux/montant/superficie
+	DateEch		Date de fin du bail
+	DateDep		Date de départ
+	BASESUR		Calcul du loyer basé sur la superficie (Utilisable, Locative, Autre)
+	SFicieU		Superficie Utilisable
+	SFicieL		Superficie Locative
+	SFicieA		Superficie Autre
+	MntFixe		Montant de base du loyer
+	TauxBase	Taux de base
+	MensAnn		Montant ou taux annuel?, mensuel ? pour n mois?
+	
+	
+[Local]
+	ID		Identifiant unique (par client)
+	UNITE		Code de l'unité/appartement
+	BASESUR		Calcul du loyer basé sur la superficie (Utilisable, Locative, Autre)
+	SFICIEU		Superficie Utilisable
+	SFICIEL		Superficie Locative
+	SFICIEA		Superficie Autre
+	ETAT		État du local (Actif, Inactif, En réparation)
+	TYPESF		Type de superficie
+	ETAGE		Étage
+	DERNOCC		Dernière occupation de l'unité
+	Note		Note et commentaires sur l'unité
+	ImcBailLocs	Array de [ImcBailLoc]
+						
+
+[Immeuble]
+	ID			Identifiant unique (par client)
+	IMMEUBLE	Code de l'immeuble
+	NOM			Nom de l'immeuble
+	ADRES1		Ligne 1 de l'adresse (No civique et rue)
+	ADRES2		Ligne 2 de l'adresse (Ville)
+	ADRES3		Ligne 3 de l'adresse (Province et pays)
+	CODEPOST	Code prostal
+	ZONE		Zone géographique
+	Unites		Array de [Unite]
+	
+[Compagnie]	
+	ID		Identifiant unique (par client)
+	NOCIE		No de compagnie
+	NODIV		No de division
+	NOMCIEDIV	Nom de la compagnie/division
+	Immeubles	Array de [Immeuble]
+
+	
+[Client]
+	NoClient	Code du client
+	Nom			Nom du client
+	SerialNo	No de série Primmo
+	ID			Identifiant du client CRM
+	LastPushedDate	Timestamp du dernier push du client
+	Compagnies  Array de [Compagnie]
+			
+
+----------------
+
+Structure globale JSON
+
+{
+	(Propriétés client),
+	"Compagnies": [{
+		(Propriétés compagnie),
+		"Immeubles" : [{
+			(Propriétés immeuble),
+			"Unites" : [{
+				(Propriétés unité), 
+				"Locataires" : [{
+								(Propriétés locataire},{}, ...
+								]
+				}, 
+				{} , 
+				...
+				],
+			"Locaux" : [{
+				(Propriétés local), 
+				"ImcBailLocs" : [{
+								(Propriétés ImcBailLoc},{}, ...
+								]
+				}, 
+				{} , 
+				...
+				]				
+			}, 
+			{}, 
+			...
+		]
+		}, 
+		{}, 
+		...
+	]
+}
+
+
+			
+				
+
+exemple:
+
+{
+	"NoClient": "HOPEM",
+	"Nom": "Les Immeubles Hopem",
+	"SerialNo": "JXJD191HT10CF3L",
+	"ID": "{7F79EA82-8D08-422F-AD29-335CE22CDB11}",
+	"LastPushedDate" : "2017-10-18 08:14:34",
+	"Compagnies": [{
+		"ID": 7,
+		"NOCIE": 3,
+		"NODIV": 1,
+		"NOMCIEDIV": "Gestion  Belles Maisons Inc.",
+		"Immeubles": [{
+			"ID": 27,
+			"IMMEUBLE": "1000PINS",
+			"NOM": "IMMEUBLE LA PINEDE 1",
+			"ADRES1": "1000 des Pins",
+			"ADRES2": "Québec",
+			"ADRES3": "QC",
+			"CODEPOST": "G1V 4R5",
+			"ZONE": "Ste-Foy",
+			"Unites": [{
+					"ID": 156,
+					"UNITE": "    101",
+					"NBPIECE": 4.5,
+					"ETAGE": "1",
+					"CODEOCC": "L",
+					"TYPLOG": "STUDIO",
+					"LOYACTU": 1000,
+					"LOYPROJ": 1025,
+					"VALMARCHE": 1000,
+					"SFICIE": 30,
+					"ORIENT": "SUD",
+					"MEUBLE": false,
+					"SEMIMEUBLE": false,
+					"LAVEUSE": true,
+					"CHAUF": true,
+					"ELECT": true,
+					"STATION": true,
+					"EAUCHAUDE": true,
+					"PATIO": true,
+					"DERNOCC": "2018-06-30",
+					"ACTIF": true,
+					"Locataires": [{
+							"ID": 7,
+							"PRENOM": "Louise",
+							"NOMLOC": "Bérard",
+							"CELLULAIRE": "15814730981",
+							"RESIDENCE": "14186521234",
+							"POSTERES": "234",
+							"BUREAU": "14186580909",
+							"POSTE": "1265",
+							"EMAIL": "lberard@hotmail.com",
+							"LOYACTU": 1000,
+							"LOYEVEN": 1025,
+							"DATEENT": "2013-07-01",
+							"DATEEXP": "2018-06-30",
+							"DATEDEP": null,
+							"SEXE": "F",
+							"MONTREC": 200
+						},
+						{
+							"ID": 7,
+							"PRENOM": "Marc",
+							"NOMLOC": "Fortier",
+							"CELLULAIRE": "15819981254",
+							"RESIDENCE": "14186521234",
+							"POSTERES": "234",
+							"BUREAU": "141865807909",
+							"POSTE": "1265",
+							"EMAIL": "mfortier@outlook.com",
+							"LOYACTU": 1000,
+							"LOYEVEN": 1025,
+							"DATEENT": "2013-07-01",
+							"DATEEXP": "2018-06-30",
+							"DATEDEP": null,
+							"SEXE": "M",
+							"MONTREC": 0
+						}
+					]
+				},
+				{
+					"ID": 216,
+					"UNITE": "    102",
+					"NBPIECE": 5.5,
+					"ETAGE": "1",
+					"CODEOCC": "L",
+					"TYPLOG": "SPLIT",
+					"LOYACTU": 1000,
+					"LOYPROJ": 1025,
+					"VALMARCHE": 1050,
+					"SFICIE": 30,
+					"ORIENT": "NORD",
+					"MEUBLE": false,
+					"SEMIMEUBLE": false,
+					"LAVEUSE": true,
+					"CHAUF": true,
+					"ELECT": true,
+					"STATION": true,
+					"EAUCHAUDE": true,
+					"PATIO": true,
+					"DERNOCC": "2018-06-30",
+					"ACTIF": true,
+					"Locataires": [{
+							"ID": 45,
+							"PRENOM": "Lise",
+							"NOMLOC": "Cyr",
+							"CELLULAIRE": "14184651922",
+							"RESIDENCE": "14185637445",
+							"POSTERES": null,
+							"BUREAU": "14184461207",
+							"POSTE": null,
+							"EMAIL": "lc9999@gmail.com",
+							"LOYACTU": 990,
+							"LOYEVEN": 1025,
+							"DATEENT": "2016-07-01",
+							"DATEEXP": "2017-06-30",
+							"DATEDEP": "2017-06-30",
+							"SEXE": "F",
+							"MONTREC": 0
+						},
+						{
+							"ID": 187,
+							"PRENOM": "Luc",
+							"NOMLOC": "Dion",
+							"CELLULAIRE": "15819832705",
+							"RESIDENCE": null,
+							"POSTERES": null,
+							"BUREAU": null,
+							"POSTE": null,
+							"EMAIL": "ld9999@gmail.com",
+							"LOYACTU": 1000,
+							"LOYEVEN": 1025,
+							"DATEENT": "2017-07-01",
+							"DATEEXP": "2018-06-30",
+							"DATEDEP": null,
+							"SEXE": "M",
+							"MONTREC": 1000
+						}
+					]
+				}
+			]
+
+		}, {
+			"IMMEUBLE": "1005PINS",
+			"NOM": "IMMEUBLE LA PINEDE II",
+			"ID": 31,
+			"ADRES1": "1005 des Pins",
+			"ADRES2": "Québec",
+			"ADRES3": "QC",
+			"CODEPOST": "G1V 4R5",
+			"ZONE": "Ste-Foy",
+			"Unites": []
+		}, {
+			"IMMEUBLE": "1007PINS",
+			"NOM": "IMMEUBLE LA PINEDE III",
+			"ID": 33,
+			"ADRES1": "1007 des Pins",
+			"ADRES2": "Québec",
+			"ADRES3": "QC",
+			"CODEPOST": "G1V 4R5",
+			"ZONE": "Ste-Foy",
+			"Unites": []
+		}]
+	}, {
+
+	}]
+}
+
