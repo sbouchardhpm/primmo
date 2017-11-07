@@ -5,7 +5,7 @@ var express 	= require('express');
 var app         = express();
 
 var https = require('https');
-var https = require('https');
+var http = require('http');
 var httpServer = null;
 var httpsServer = null;
 
@@ -17,7 +17,7 @@ if (config.secure == true) {
 	httpsServer.listen(config.port);
 }
 else {
-	httpServer = https.createServer(app);
+	httpServer = http.createServer(app);
 	httpServer.listen(config.port);
 }
 
