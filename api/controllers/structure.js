@@ -1,5 +1,6 @@
 var Client = require("../data/structure.js");
 var Utils = require("../utils/utils.js");
+var User = require("../data/user.js");
 
 var pushClient = function(req,res) {
 	
@@ -20,10 +21,12 @@ var pushClient = function(req,res) {
 	}
 	
 	var obj = null;
+	var offset = (new Date()).getTimezoneOffset() * 60000;
+	var aDate = (new Date(Date.now() - offset)).toISOString();
+	var aDate = aDate.substring(0,10) + " " + aDate.substring(11,19);
+	
 	try {
 		obj = eval('(' + data + ')');
-		var aDate = (new Date()).toISOString();
-		var aDate = aDate.substring(0,10) + " " + aDate.substring(11,19);
 		obj.lastPushedDate = aDate;
 	}
 	catch (err) {
@@ -41,6 +44,29 @@ var pushClient = function(req,res) {
 			res.status(500)
 			.json({message: "Erreur : " + err});
 		}
+		
+		// Mise a jour de la date Push dans les usagers
+		
+		User.find({'clients.noClient' : {$eq : noClient}},function(err,docs) {
+		
+			
+			for (var i=0; i < docs.length; i++) {
+				var user = docs[i];
+				for (var j=0; j < user.clients.length; j++) {
+					var client = user.clients[j];
+					if (client.noClient == noClient) {
+						client.lastPushedDate = aDate;
+						user.save(function(err,updatedUser) {
+						if (err)
+							console.log("erreur de mise a jour user") ;
+						});
+						break;
+						
+					
+					}
+				}
+			}
+		});
 		
 		res.status(200)
 		.json({message: "Client sauvgardé"})

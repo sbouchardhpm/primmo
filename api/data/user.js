@@ -7,5 +7,5 @@ module.exports = mongoose.model('User', new Schema({
     name: String, 
     password: String, 
     admin: Boolean,
-	clients : [{ NoClient : String}]
+	clients : [{ noClient : String, lastPushedDate : String}]
 }));
