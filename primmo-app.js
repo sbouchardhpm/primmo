@@ -29,7 +29,7 @@ var mongoose    = require('mongoose');
 
 var jwt    = require('jsonwebtoken'); // used to create, sign, and verify tokens
 
-app.set('superSecret', config.secret); // secret variable
+//app.set('superSecret', config.secret); // secret variable
 
 // =================================================================
 // configuration ===================================================

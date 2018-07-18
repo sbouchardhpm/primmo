@@ -1,0 +1,49 @@
+
+HOPEM api signature
+
+
+
+	/api/
+			Method : Get,Post
+			Purpose: MAke sure it's alive
+			Input : None
+			Output : Text
+		
+		
+	/api/admin/setup
+	
+			Method : Get
+			Purpose : Build the basic database objects
+			Input : None
+			Ouput : Text
+			
+	
+	/api/authenticate
+	
+			Method : Post
+			Purpose : Creating a session
+			Input : user,password
+			Output : token (sucess) or message (error)
+	
+	
+	/structure/:noClient/push
+	
+			Method : Post
+			Purpose : Pushing customer structure from Primmo to cloud
+			Input : token, data (json)
+			Output : Result text 
+	
+	
+	/structure/:noClient/get
+	
+			Method : Post
+			Purpose : Getting the customer structure from cloud
+			Input	: token
+			Ouput : data (json) or Result text
+			
+	/clients
+	
+			Method : Post
+			Purpose : Getting allowed Primmo client list 
+			Input : token
+			Output : customer list (json) or Result text
