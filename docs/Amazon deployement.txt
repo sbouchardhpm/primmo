@@ -1,0 +1,125 @@
+Adresse : https://console.aws.amazon.com
+user: sbouchardgestgechnologies.ca	
+pwd: AwsPrimmo8!
+
+Pour voir l'instance : EC2 - Click sur runnin instance
+
+Pour hosting de domaine 
+	Console, Route 53, Hosted zones
+	Création d'un record set entre hopemservices.com et l'adresse elestic retrouvé dans l'insance EC2 (ipv4)
+	
+Pour générer un certificat de signature
+
+	Console, Certificate Manager, Request a certificate
+	
+
+Configuration des ports en entrées
+
+	Console, EC2, Security Group, Choisir Mean group
+	S'assurer qu'il y a des inboud rule pour HTTP 80, Custom TCP 8080,  SSH 22, Custom TCP 27017, HTTPS 443   (TPC) sur 0.0.0.0/0
+
+
+
+
+Accès à l'instance Linux
+
+Utiliser putty.exe (répertoire ressource)
+Session , host name : hopemservices.com
+Connection, SSH, Auth, Private key file for authentification : ressource\primmoapi.ppk
+login as : bitnami
+
+Commande de base  
+
+ls : list files
+cd : change directory
+
+L'application est dans apps\primmo
+
+
+Setup de Mongo
+
+	sudo mongo admin --username root --password KcxUD8yVVIPN 
+	use admin
+	db.createUser({user: "...", pwd : "...", roles : ["root]})
+	
+	un user a été créé pour la connection. On doit le changer dans le connect string de l'application 
+		user: primmoAdmin
+		pwd : PrimmoTest8!
+		
+	Autorise IP pour mongo
+	
+		cd stack, cd mongodb
+		sudo vi mongodb.conf
+		change le bind_ip pour 0.0.0.0
+		Faire : w : q:
+	
+		cd..
+		sudo bash ctlscript.sh restart mongodb
+		
+
+Pour s'assurer le routing sur port 80 et 443 (normalement on utilise seulement le 443 https) sur le port 8080 qui est le port qu'écoute l'application
+
+	sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8080
+	sudo iptables -t nat -A PREROUTING -p tcp --dport 443 -j REDIRECT --to-port 8080
+	
+	A refaire chaque fois que l'instance est redémarré
+	
+	
+Installation initial de primmo
+
+	cd apps 
+	sudo git clone https://github.com/sbouchardhpm/primmo
+	cd primmo
+	sudo npm install
+
+Update subséquant
+
+	cd primmo
+	sudo git pull https://github.com/sbouchardhpm/primmo
+
+Ajustement de la configuration
+
+	cd primmo
+	sudo vi config.js
+	Mettre ...
+		'database' : 'mongodb://primmoAdmin:PrimmoTest8!@hopemservices.com:27017/primmoDB'
+		'port' : 8080
+		'secure' : true
+		'certfile' : __dirname + '/cert/base2.cert'
+		'keyfile' : __dirname + '/cert/base2.key'
+	: w : q
+	
+	Présentement le base2 est le dernier certificat à jour
+	
+
+
+Installation de forever
+
+	sudo npm install forever -g
+
+Démarrage de primmo
+
+	cd primmo
+	forever start primmo-app.js
+	
+Arret de primmo
+
+	cd primmo
+	forever stop primmo-app.js
+	
+	
+Pour connaitre le status des services
+
+	sudo /opt/bitnami/ctlscript.sh  start|stop|status  nomduservice
+
+	
+GIt 
+
+	user : sbouchardhpm
+	pwd: sushi123		
+	
+
+RapideSSL (fournisseur du certificat ssl)
+
+	user : sbouchard@gestechnologies.ca
+	pwd: 	adminPrimmo8!
