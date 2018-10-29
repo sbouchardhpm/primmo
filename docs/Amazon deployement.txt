@@ -85,8 +85,8 @@ Ajustement de la configuration
 		'database' : 'mongodb://primmoAdmin:PrimmoTest8!@hopemservices.com:27017/primmoDB'
 		'port' : 8080
 		'secure' : true
-		'certfile' : __dirname + '/cert/base2.cert'
-		'keyfile' : __dirname + '/cert/base2.key'
+		'certfile' : __dirname + '/cert/base3.cert'
+		'keyfile' : __dirname + '/cert/base3.key'
 	: w : q
 	
 	Présentement le base2 est le dernier certificat à jour

@@ -24,6 +24,7 @@ var locataireSchema =   new Schema({
 	montRec:	Number,
 	lha:		String,
 	langue:		String
+	//,montantARecevoir : Number
 });
 
 
@@ -134,6 +135,8 @@ var immeubleSchema = new Schema({
 	adres3:		String,
 	codePost:	String,
 	zone:		String,
+	principalId : Number,
+	adressesMultiples : Boolean,
 	unites:		[uniteSchema],
 	locaux :	[localSchema]
 });
@@ -151,6 +154,7 @@ var clientSchema = new Schema({
 	nom:			String,
 	serialNo:		String,
 	lastPushedDate: String,
+	version : 		String,
 	compagnies:  [compagnieSchema]
 });
 
@@ -213,6 +217,8 @@ Définitions:
 	ADRES3		Ligne 3 de l'adresse (Province et pays)
 	CODEPOST	Code prostal
 	ZONE		Zone géographique
+	principalId Immeuble principal
+	adressesMultiples Indicateur qu'il y a plus d'une adresses
 	Unites		Array de [Unite]
 	
 [Compagnie]	
@@ -228,6 +234,7 @@ Définitions:
 	Nom			Nom du client
 	SerialNo	No de série Primmo
 	ID			Identifiant du client CRM
+	Version		Version de l'exporteur
 	Compagnies  Array de [Compagnie]
 			
 
@@ -433,5 +440,83 @@ exemple:
 	}]
 }
 
+{
+        "noClient": "LOGEUR",
+        "nom": "Le Logeur.com",
+        "serialNo": "JM2X1-13W9Y-TYTV1",
+		"version" : "2.0",
+        "compagnies": [
+            {
+                "nomCieDiv": "Compagnie installation (99,99)",
+                "noDiv": 99,
+                "noCie": 99,
+                "id": 1,
+				
+                "immeubles": [
+                    {
+                        "zone": "",
+                        "codePost": "",
+                        "adres3": "",
+                        "adres2": "",
+                        "adres1": "*",
+                        "nom": "B",
+                        "immeuble": "100",
+                        "id": 1,
+						"principalId" : 1,
+						adressesMultiples : false,
+                        "locaux": [],
+                        "unites": [
+                            {
+                                "pacTexte": "",
+                                "actif": true,
+                                "dernOcc": "",
+                                "patio": false,
+                                "eauChaude": false,
+                                "station": false,
+                                "elect": false,
+                                "chauf": false,
+                                "laveuse": false,
+                                "semiMeuble": false,
+                                "meuble": false,
+                                "orient": "",
+                                "sficie": 0,
+                                "valMarche": 0,
+                                "loyProj": 0,
+                                "loyActu": 0,
+                                "typLog": "REGULIER",
+                                "codeOcc": "L",
+                                "etage": "",
+                                "nbPiece": 3.5,
+                                "unite": "     1",
+                                "id": 1,
+                                "locataires": [
+                                    {
+                                        "langue": "F",
+                                        "lha": "L",
+                                        "montRec": 123.56,
+                                        "sexe": "M",
+                                        "dateDep": "",
+                                        "dateExp": "2018/06/30",
+                                        "dateEnt": "2017/07/01",
+                                        "loyEven": 0,
+                                        "loyActu": 500,
+                                        "email": "",
+                                        "poste": "",
+                                        "bureau": "",
+                                        "posteRes": "0",
+                                        "residence": "",
+                                        "cellulaire": "",
+                                        "nomLoc": "Bujold",
+                                        "prenom": "Mélissa",
+                                        "id": 1
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+		]
+	}
 */
 

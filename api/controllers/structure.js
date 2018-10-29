@@ -28,6 +28,8 @@ var pushClient = function(req,res) {
 	try {
 		obj = eval('(' + data + ')');
 		obj.lastPushedDate = aDate;
+		if (! obj.version) 
+			obj.version = "1.0";
 	}
 	catch (err) {
 		res.status(403)
@@ -56,6 +58,8 @@ var pushClient = function(req,res) {
 					var client = user.clients[j];
 					if (client.noClient == noClient) {
 						client.lastPushedDate = aDate;
+						client.version = obj.version;
+						client.serialNo = obj.serialNo;
 						user.save(function(err,updatedUser) {
 						if (err)
 							console.log("erreur de mise a jour user") ;

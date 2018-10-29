@@ -1,0 +1,47 @@
+Processus de génération d'un certificat ssl
+
+
+1- Achat du certificat SSL
+
+	Méthode de vérification : Email to domain owner
+	
+2- Soumission du CSR 
+
+	A- Création d'un keystore
+	
+		D:\certif\hopem services>"C:\Program Files\Java\jdk1.8.0_60\bin\keytool" -genkey
+ 		-alias server -keyalg RSA -keysize 2048 -keystore hopemservices.jks
+ 		
+ 		Mettre hopemservices comme nom et prenom. 
+ 		Mettre un mot de passe que l'on peut se rappeller facilement
+ 	
+ 	B- Création du fichier CSR
+ 	
+ 		D:\certif\hopem services>"C:\Program Files\Java\jdk1.8.0_60\bin\keytool" -certreq
+ 		 -alias server -keyalg RSA -file hopemservices.csr -keystore hopemservices.jks
+ 		 
+ 		 Prendre le contenu de hopemservices.csr intégral et faire un copy/paste sur le site de l'emetteur
+ 		 
+ 		 Attendre la réponse de l'emetteur
+ 		 
+ 	
+ 3- Réception du certificat
+ 
+ 	A- Générer le certificat en mode Non-apache X.509 sur le site de l'emetteur
+ 	
+ 	B- Le fichier *.cer est le certificat à installer tel quel
+ 	
+ 	C- Génération du key file
+ 	
+ 		Il faut transformer le keystore qui a servi au csr de jks à p12
+ 	
+ 		D:\certif\hopem services>"C:\Program Files\Java\jdk1.8.0_60\bin\keytool" -importkeystore
+ 		 -srckeystore hopemservices.jks -destkeystore hopemservices.p12 -deststoretype PKCS12
+ 		 
+ 		Exportation de la clé
+ 		
+ 		D:\certif\hopem services>openssl pkcs12 -in hopemservices.p12 -nodes -nocerts -out mykey.key
+ 		
+ 		Le fichier mykey.key est la clé privée à installer.
+ 		
+ 		
