@@ -25,6 +25,17 @@ router
 	.post(adminCtrl.auth);
 	
 router.use(function(req, res, next) {
+	
+	// save ip address of request
+	var ip = req.ip;
+	var pos = ip.lastIndexOf(":");
+	if (pos > 0)
+		req.usedIp = ip.substring(pos+1);
+	else
+		req.usedIp = ip;
+	
+	//console.log("ip=" + req.usedIp);
+	
 	// check header or url parameters or post parameters for token
 	var token = req.body.token || req.query.token || req.headers['x-access-token'];
 	

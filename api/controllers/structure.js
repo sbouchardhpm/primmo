@@ -60,6 +60,7 @@ var pushClient = function(req,res) {
 						client.lastPushedDate = aDate;
 						client.version = obj.version;
 						client.serialNo = obj.serialNo;
+						client.ipAddress = req.usedIp;
 						user.save(function(err,updatedUser) {
 						if (err)
 							console.log("erreur de mise a jour user") ;

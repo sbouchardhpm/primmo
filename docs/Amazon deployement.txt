@@ -77,6 +77,12 @@ Update subséquant
 	cd primmo
 	sudo git pull https://github.com/sbouchardhpm/primmo
 
+Il est plus simple de détruire l'application que de faire un update. Pour détruire
+
+	cd apps
+	sudo rm -r primmo
+
+
 Ajustement de la configuration
 
 	cd primmo
