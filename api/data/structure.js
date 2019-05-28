@@ -3,6 +3,33 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 
+var statLouSchema = new Schema({
+	id:			Number,
+	statEspId:	Number,
+	vehicule1:	String,
+	vehicule2:	String,
+	plaque1:	String,
+	plaque2:	String,
+	carte:		String,
+	montant:	Number,
+	eventuel:	Number,
+	dateDeb:	String,
+	dateFin:	String
+});
+
+var rangLouSchema = new Schema({
+	id:			Number,
+	rangEspId:	Number,
+	noCle:		String,
+	montant:	Number,
+	eventuel:	Number,
+    tauxActu:   Number,
+    tauxEven:   Number,
+    amActu:     String,
+    amEven:     String,
+	dateDeb:	String,
+	dateFin:	String
+});
 
 
 var locataireSchema =   new Schema({ 
@@ -23,8 +50,10 @@ var locataireSchema =   new Schema({
 	sexe:		String,
 	montRec:	Number,
 	lha:		String,
-	langue:		String
+	langue:		String,
 	//,montantARecevoir : Number
+	statLous:	[statLouSchema],
+	rangLous:	[rangLouSchema]
 });
 
 
@@ -101,7 +130,9 @@ var imcBailLocSchema = new Schema({
 	mntFixe:	Number,
 	tauxBase:	Number,
 	mensAnn	:	String,
-	imcConts:	[imcContSchema]
+	imcConts:	[imcContSchema],
+	statLous:	[statLouSchema],
+	rangLous:	[rangLouSchema]
 });
 
 var localSchema = new Schema({
@@ -141,12 +172,36 @@ var immeubleSchema = new Schema({
 	locaux :	[localSchema]
 });
 
+ var statEspSchema = new Schema({
+	 id:		Number,
+	 parc:		String,
+	 immeuble:	String,
+	 noStat:	String,
+	 montant:	Number,
+	 largeur:	Number,
+	 comment:	String
+ });
+
+var rangEspSchema = new Schema({
+	id:			Number,
+	parc:		String,
+	immeuble:	String,
+	noRang:		String,
+	montant:	Number,
+	taux:		Number,
+	annMens:	String,
+	sficie:		Number,
+	comment:	String
+});
+
 var compagnieSchema = new Schema({
 	id:			Number,
 	noCie:		Number,
 	noDiv:		Number,
 	nomCieDiv:	String,
-	immeubles:	[immeubleSchema]
+	immeubles:	[immeubleSchema],
+	statEsps:   [statEspSchema],
+    rangEsps:   [rangEspSchema]
 });
 
 var clientSchema = new Schema({

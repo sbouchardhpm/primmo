@@ -95,7 +95,7 @@ Ajustement de la configuration
 		'keyfile' : __dirname + '/cert/base3.key'
 	: w : q
 	
-	Présentement le base2 est le dernier certificat à jour
+	Présentement le base3 est le dernier certificat à jour
 	
 
 

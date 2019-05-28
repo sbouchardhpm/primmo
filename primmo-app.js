@@ -1,27 +1,19 @@
 // App primmo
-var config = require('./config'); // get our config file
+
+var appSecure = null; 
+var appNonSecure = null; 
+
 var fs = require('fs');
 
 var express 	= require('express');
-var app         = express();
+var proxy = require('express-http-proxy');
+
 
 var https = require('https');
 var http = require('http');
+
 var httpServer = null;
-var httpsServer = null;
-
-if (config.secure == true) {
-	var privateKey  = fs.readFileSync(config.keyFile, 'utf8');
-	var certificate = fs.readFileSync(config.certFile, 'utf8');
-	var credentials = {key: privateKey, cert: certificate};
-	httpsServer = https.createServer(credentials, app);
-	httpsServer.listen(config.port);
-}
-else {
-	httpServer = http.createServer(app);
-	httpServer.listen(config.port);
-}
-
+var httpsServe = null;
 
 
 var bodyParser  = require('body-parser');
@@ -30,36 +22,83 @@ var mongoose    = require('mongoose');
 
 var jwt    = require('jsonwebtoken'); // used to create, sign, and verify tokens
 
-//app.set('superSecret', config.secret); // secret variable
+doSetupServer();
 
-// =================================================================
-// configuration ===================================================
-// =================================================================
-//var port = process.env.PORT || 8080; // used to create, sign, and verify tokens
-app.set("port",config.port);
+doSetupApi();
 
-mongoose.connect(config.database); // connect to database
-app.set('superSecret', config.secret); // secret variable
+doSetupFs();
 
-// use body parser so we can get info from POST and/or URL parameters
-app.use(bodyParser.urlencoded({ extended: false, limit: '50mb' }));
-app.use(bodyParser.json({limit: '50mb'}));
+doSetupWiki();
+
+function doSetupServer() {
+	
+	var configServer = require('./configServer'); // get our config file
+	
+	appSecure = express();
+	
+	var privateKey  = fs.readFileSync(configServer.keyFile, 'utf8');
+	var certificate = fs.readFileSync(configServer.certFile, 'utf8');
+	var credentials = {key: privateKey, cert: certificate};
+	httpsServer = https.createServer(credentials, appSecure);
+	httpsServer.listen(configServer.securePort);
+	appSecure.set("port",configServer.securePort);
+	// use morgan to log requests to the console
+	appSecure.use(morgan('dev'));
+	
+	appNonSecure = express();
+	
+	httpServer = http.createServer(appNonSecure);
+	httpServer.listen(configServer.nonSecurePort);
+	appNonSecure.set("port",configServer.nonSecurePort);
+	
+}
+
+function doSetupFs() {
+	
+	var configFs = require('./configFs'); // get our config file
+	
+	var routesFs = require("./fs/routes");
+
+	if (configFs.secure == true)
+		appSecure.use("/fs",routesFs);
+	else
+		appNonSecure.use("/fs",routesFs);
+}
 
 
 
-// use morgan to log requests to the console
-app.use(morgan('dev'));
+function doSetupApi() {
+	
+	var configApi = require('./configApi'); // get our config file
+	
+	mongoose.connect(configApi.database); // connect to database
+	
+	// use body parser so we can get info from POST and/or URL parameters
+	
+		
+	var routesApi = require("./api/routes");
 
-//var server = app.listen(app.get("port"),function() {
-//
-//	console.log(server.address().port);
-//	console.log("waiting you in " + app.get("port"));
-//});
+	if (configApi.secure == true) {
+		appSecure.use(bodyParser.urlencoded({ extended: false, limit: '50mb' }));
+		appSecure.use(bodyParser.json({limit: '50mb'}));
+		appSecure.use("/api",routesApi);
+	}
+	else {
+		appNonSecure.use(bodyParser.urlencoded({ extended: false, limit: '50mb' }));
+		appNonSecure.use(bodyParser.json({limit: '50mb'}));
+		appNonSecure.use("/api",routesApi);
+	}
 
+}
 
-
-var routes = require("./api/routes");
-
-
-app.use("/api",routes);
-
+function doSetupWiki() {
+	
+	var configWiki = require('./configWiki'); // get our config file
+	appNonSecure.use(configWiki.basePath, proxy(configWiki.redirectUrl,{
+		proxyReqPathResolver: function(req) {
+			//console.log('url=' + req.url )
+			return configWiki.redirectPath +  req.url;
+		}
+	}));
+	
+}

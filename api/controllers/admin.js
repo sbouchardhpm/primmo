@@ -1,11 +1,11 @@
 var User   = require('../data/user.js'); // get our mongoose model
 var jwt    = require('jsonwebtoken'); // used to create, sign, and verify tokens
-var config = require('../../config'); // get our config file
+var config = require('../../configApi'); // get our config file
 var Utils = require("../utils/utils.js");
 
 
 var setupEnv = function(req,res) {
-	console.log("setup ici");
+	
 	
 	User.findOne({"name" : "adminPrimmo" }, function(err, aUser) {
 	
