@@ -26,7 +26,7 @@ HOPEM api signature
 			Output : token (sucess) or message (error)
 	
 	
-	/structure/:noClient/push
+	api/structure/:noClient/push
 	
 			Method : Post
 			Purpose : Pushing customer structure from Primmo to cloud
@@ -34,14 +34,14 @@ HOPEM api signature
 			Output : Result text 
 	
 	
-	/structure/:noClient/get
+	api/structure/:noClient/get
 	
 			Method : Post
 			Purpose : Getting the customer structure from cloud
 			Input	: token
 			Ouput : data (json) or Result text
 			
-	/clients
+	api/clients
 	
 			Method : Post
 			Purpose : Getting allowed Primmo client list 

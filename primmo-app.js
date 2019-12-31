@@ -41,14 +41,16 @@ function doSetupServer() {
 	var credentials = {key: privateKey, cert: certificate};
 	httpsServer = https.createServer(credentials, appSecure);
 	httpsServer.listen(configServer.securePort);
+	httpsServer.timeout = 600000;
 	appSecure.set("port",configServer.securePort);
 	// use morgan to log requests to the console
-	appSecure.use(morgan('dev'));
+	appSecure.use(morgan('common'));
 	
 	appNonSecure = express();
 	
 	httpServer = http.createServer(appNonSecure);
 	httpServer.listen(configServer.nonSecurePort);
+	httpServer.timeout = 600000;
 	appNonSecure.set("port",configServer.nonSecurePort);
 	
 }
@@ -88,6 +90,8 @@ function doSetupApi() {
 		appNonSecure.use(bodyParser.json({limit: '50mb'}));
 		appNonSecure.use("/api",routesApi);
 	}
+	
+	console.log("timeout = " + httpServer.timeout);
 
 }
 
