@@ -82,8 +82,14 @@ var auth = function(req,res) {
 					var toSign = {
 						name : user.name,
 						admin : user.admin,
-						clients : user.clients
+						clients : user.clients,
+						rights : (user.rights == undefined ? "" : user.rights )
 					};
+					
+					
+					
+					
+					
 					var token = jwt.sign(toSign, config.secret, {
 						expiresIn : '24h' 
 					});

@@ -51,6 +51,7 @@ var locataireSchema =   new Schema({
 	montRec:	Number,
 	lha:		String,
 	langue:		String,
+	commPrivilege : String ,
 	//,montantARecevoir : Number
 	statLous:	[statLouSchema],
 	rangLous:	[rangLouSchema]

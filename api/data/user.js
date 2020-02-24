@@ -7,5 +7,6 @@ module.exports = mongoose.model('User', new Schema({
     name: String, 
     password: String, 
     admin: Boolean,
+    rights : String,
 	clients : [{ noClient : String, lastPushedDate : String, version : String, serialNo : String, ipAddress: String}]
 }));

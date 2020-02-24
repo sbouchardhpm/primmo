@@ -58,7 +58,13 @@ router.use(function(req, res, next) {
 				return;
 			} else {
 				// if everything is good, save to request for use in other routes
-								
+				
+				/// Patch pour transition a verification des droits
+				
+				if ( decoded.rights == undefined)
+					decoded.rights = "";
+				
+				
 				req.uSess = decoded;	
 				next();
 			}
@@ -85,6 +91,11 @@ router
 	.route("/structure/:noClient/get")
 	.post(structureCtrl.exp)
 	.get(structureCtrl.exp);
+
+router
+	.route("/structure/:noClient/listResident")
+	.post(structureCtrl.listResident)
+	.get(structureCtrl.listResident);
 	
 router
 	.route("/clients")
