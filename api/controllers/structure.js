@@ -49,8 +49,11 @@ var pushClient = function(req,res) {
 	Client.findOneAndUpdate(query, obj, {upsert:true}, function(err, doc){
 		
 		if (err) {
+			console.log("Error on update client "  +noClient);
+			console.log("Error message : " + err);
 			res.status(500)
 			.json({message: "Erreur : " + err});
+			return;
 		}
 		
 		// Mise a jour de la date Push dans les usagers
@@ -115,11 +118,13 @@ var exportClient = function(req,res) {
 		if (err) {
 			res.status(500)
 			.json({message: "Erreur : " + err});
+			return;
 		}
 		
 		if (doc == null) {
 			res.status(404)
 			.json({message : "Aucune donnée pour client " + noClient})
+			return;
 		}
 		else {
 			res.status(200)
@@ -158,11 +163,13 @@ var listResident = function(req,res) {
 		if (err) {
 			res.status(500)
 			.json({message: "Erreur : " + err});
+			return;
 		}
 		
 		if (doc == null) {
 			res.status(404)
 			.json({message : "Aucune donnée pour client " + noClient})
+			return;
 		}
 		else {
 			//console.log("res="+doc);
@@ -257,6 +264,7 @@ var projectionListResident = {
 		"compagnies.immeubles.unites.locataires.dateDep" : 1,
 		"compagnies.immeubles.unites.locataires.sexe" : 1,
 		"compagnies.immeubles.unites.locataires.langue" : 1,
-		"compagnies.immeubles.unites.locataires.commPrivilege" : 1
+		"compagnies.immeubles.unites.locataires.commPrivilege" : 1,
+		"compagnies.immeubles.unites.locataires.lha" : 1
 		
 };

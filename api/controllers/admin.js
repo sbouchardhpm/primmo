@@ -1,4 +1,5 @@
 var User   = require('../data/user.js'); // get our mongoose model
+var Client   = require('../data/structure.js'); 
 var jwt    = require('jsonwebtoken'); // used to create, sign, and verify tokens
 var config = require('../../configApi'); // get our config file
 var Utils = require("../utils/utils.js");
@@ -137,8 +138,45 @@ var getClients = function(req,res) {
 	
 };
 
+var listInactive = function(req,res) {
+	
+	var aDate = new Date();
+	aDate.setDate(aDate.getDate() -1);
+	
+	var theDate = aDate.toISOString();
+	theDate = theDate.replace("T", " ");
+	theDate = theDate.substring(0,19);
+	
+	console.log("theDate = " + theDate);
+	Client.find( {"lastPushedDate" : {$lt : theDate}}, {"noClient" : 1, "lastPushedDate" : 1}, function (err, clients) {
+		
+		if (err) {
+			
+			console.log("Error in list inactive");
+			console.log(err);
+			
+			res.status(500)
+			.json(err);
+			return;
+		}
+		
+		var result = "";
+		for (var i=0; i < clients.length ; i++)
+			result = result + ((i !=0) ? "<BR/>" : "") + clients[i].lastPushedDate + " - " + clients[i].noClient;
+		
+		if (result == "")
+			result = "No inactive client";
+		
+		res.status(200)
+		.send(result);
+		
+		
+	});
+};
+
 module.exports = {
 	setup : setupEnv,
 	auth: 	auth,
-	getClients : getClients
+	getClients : getClients,
+	listInactive : listInactive
 };

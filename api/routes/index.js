@@ -19,6 +19,10 @@ router
 router
 	.route("/admin/setup")
 	.get(adminCtrl.setup);
+
+router
+.route("/admin/clients/inactive")
+.get(adminCtrl.listInactive);
 	
 router
 	.route("/authenticate")

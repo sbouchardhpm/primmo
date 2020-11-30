@@ -24,6 +24,13 @@ HOPEM api signature
 			Purpose : Creating a session
 			Input : user,password
 			Output : token (sucess) or message (error)
+			
+	/api/admin/clients/inactive
+	
+			Method : Get
+			Purpose : Get the list of clients with lastPushedDate greater than on day
+			Input : None
+			Output : Text (formatted with BR
 	
 	
 	api/structure/:noClient/push

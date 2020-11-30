@@ -106,7 +106,7 @@ Installation de forever
 Démarrage de primmo
 
 	cd primmo
-	forever start primmo-app.js
+	forever start -c "node --max-old-space-size=4096" primmo-app.js
 	
 Arret de primmo
 

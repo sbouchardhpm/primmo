@@ -34,6 +34,7 @@ var rangLouSchema = new Schema({
 
 var locataireSchema =   new Schema({ 
     id:			Number,
+    noloc:		Number,
 	prenom:		String,
 	nomLoc:		String,
 	cellulaire:	String,
@@ -51,6 +52,10 @@ var locataireSchema =   new Schema({
 	montRec:	Number,
 	lha:		String,
 	langue:		String,
+	commentaireCAR: String,
+	dateRAcc:	String,
+	ar_Reponse:	String,
+	totalBail:	Number,
 	commPrivilege : String ,
 	//,montantARecevoir : Number
 	statLous:	[statLouSchema],
@@ -82,6 +87,7 @@ var uniteSchema = new Schema({
 	actif:		Boolean,
 	pacTitrte:	String,
 	pacTexte:	String,
+	taux:		Number,
 	locataires:	[locataireSchema]
 });
 
@@ -102,6 +108,7 @@ var imcContSchema = new Schema({
 });
 var imcBailLocSchema = new Schema({
 	id:			Number,
+	noloc:		Number,
 	codeLoc:	String,
 	nomLoc:		String,
 	raisonSoc:	String,
@@ -131,6 +138,14 @@ var imcBailLocSchema = new Schema({
 	mntFixe:	Number,
 	tauxBase:	Number,
 	mensAnn	:	String,
+	totBailLoyerBaseMensuel:		Number,
+	totBailAutresFraisMensuel:		Number,       
+	totBailAutresFraisTrimestriel:	Number,   
+	totBailAutresFraisAnnuel:		Number,
+	totBailStationnementsMensuel:	Number,
+	totBailRangementsMensuel:		Number,
+	totBailTotalMensuel:		Number,
+	totBailTotalAnnuel :		Number,
 	imcConts:	[imcContSchema],
 	statLous:	[statLouSchema],
 	rangLous:	[rangLouSchema]
