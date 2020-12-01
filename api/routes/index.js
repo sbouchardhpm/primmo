@@ -23,6 +23,10 @@ router
 router
 .route("/admin/clients/inactive")
 .get(adminCtrl.listInactive);
+
+router
+.route("/admin/clients/:noClient/disable")
+.get(adminCtrl.disableClient);
 	
 router
 	.route("/authenticate")

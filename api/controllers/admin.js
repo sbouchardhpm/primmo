@@ -174,9 +174,89 @@ var listInactive = function(req,res) {
 	});
 };
 
+var disableClient = function(req,res) {
+	
+	var noClient = req.params.noClient;
+	
+	User.findOne({"name": noClient}, function(err, aUser) {
+		
+			if (err) {
+				
+				console.log("Error looking for user " + noClient);
+				console.log(err);
+				
+				res.status(500)
+				.json(err);
+				return;
+			}
+			
+			if (! aUser) {
+				
+				res.status(404)
+				.send("Client " + noClient + " introuvable");
+				return;
+			}
+			
+			aUser.name = aUser.name + " - DISABLED";
+			aUser.password = (Math.floor(Math.random() * 10000000) + 1).toString();
+			
+			aUser.save(function(err2,doc) {
+				
+				if (err2) {
+					console.log("Error saving user " + noClient);
+					console.log(err);
+					
+					res.status(500)
+					.json(err);
+					return;
+				}
+				
+				User.find({'clients.noClient' : {$eq : noClient}},function(err3,docs) {
+					
+					
+					for (var i=0; i < docs.length; i++) {
+						var user = docs[i];
+						for (var j=0; j < user.clients.length; j++) {
+							var client = user.clients[j];
+							if (client.noClient == noClient) {
+								client.noClient = client.noClient + " - DISABLED";
+								client.lastPushedDate = "";
+								user.save(function(err,updatedUser) {
+								if (err)
+									console.log("erreur de mise a jour user") ;
+								});
+								break;
+								
+							
+							}
+						}
+					}
+				});
+				
+				Client.deleteOne({"noClient" : noClient} , function(err4) {
+					
+					if (err4) {
+						console.log("Error while deleting client " + noClient);
+						console.log(err4);
+						
+						res.status(500)
+						.send("Error while deleting client " + noClient);
+						return;
+					}
+					
+					res.status(200)
+					.send("Client " + noClient + " disabled");
+				});
+			});
+		
+	});
+	
+};
+
 module.exports = {
 	setup : setupEnv,
 	auth: 	auth,
 	getClients : getClients,
-	listInactive : listInactive
+	listInactive : listInactive,
+	disableClient : disableClient
 };

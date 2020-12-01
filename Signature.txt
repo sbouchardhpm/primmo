@@ -30,7 +30,15 @@ HOPEM api signature
 			Method : Get
 			Purpose : Get the list of clients with lastPushedDate greater than on day
 			Input : None
-			Output : Text (formatted with BR
+			Output : Text (formatted with BR)
+			
+			
+	/api/admin/clients/:noClient/disable
+	
+			Method : Get
+			Purpose: Disable a specific client
+			Input : None
+			Output : Text
 	
 	
 	api/structure/:noClient/push
