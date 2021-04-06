@@ -1,5 +1,6 @@
 var User   = require('../data/user.js'); // get our mongoose model
-var Client   = require('../data/structure.js'); 
+var Client   = require('../data/structure.js').clientModel; 
+var Compagnie   = require('../data/structure.js').compagnieModel; 
 var jwt    = require('jsonwebtoken'); // used to create, sign, and verify tokens
 var config = require('../../configApi'); // get our config file
 var Utils = require("../utils/utils.js");
@@ -147,7 +148,7 @@ var listInactive = function(req,res) {
 	theDate = theDate.replace("T", " ");
 	theDate = theDate.substring(0,19);
 	
-	console.log("theDate = " + theDate);
+	
 	Client.find( {"lastPushedDate" : {$lt : theDate}}, {"noClient" : 1, "lastPushedDate" : 1}, function (err, clients) {
 		
 		if (err) {
@@ -244,8 +245,22 @@ var disableClient = function(req,res) {
 						return;
 					}
 					
-					res.status(200)
-					.send("Client " + noClient + " disabled");
+					var regexp = new RegExp("^"+ noClient + "_");
+					Compagnie.deleteMany({"storageKey" : regexp},function(err5,docs) {
+						
+						if (err5) {
+							console.log("Error while deleting client " + noClient);
+							console.log(err5);
+							
+							res.status(500)
+							.send("Error while deleting client " + noClient);
+							return;
+						}
+						
+						res.status(200)
+						.send("Client " + noClient + " disabled");
+					});
+					
 				});
 			});
 		

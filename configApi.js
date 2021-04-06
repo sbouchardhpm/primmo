@@ -4,6 +4,7 @@ module.exports = {
     'database': 'mongodb://localhost:27017/primmoDB',
     //'database' : 'mongodb://primmoAdmin:PrimmoTest8!@hopemservices.com:27017/primmoDB',
 	debug : false,
-	secure : false
+	secure : false,
+	restrictMode : true
 	
 };

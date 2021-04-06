@@ -79,16 +79,27 @@ function doSetupApi() {
 	
 		
 	var routesApi = require("./api/routes");
+	var routesRestrict = require("./restrict");
 
 	if (configApi.secure == true) {
 		appSecure.use(bodyParser.urlencoded({ extended: false, limit: '50mb' }));
 		appSecure.use(bodyParser.json({limit: '50mb'}));
-		appSecure.use("/api",routesApi);
+		if (configApi.restrictMode) {
+			appSecure.use("/restrict",routesRestrict);
+		}
+		else {
+			appSecure.use("/api",routesApi);
+		}
 	}
 	else {
 		appNonSecure.use(bodyParser.urlencoded({ extended: false, limit: '50mb' }));
 		appNonSecure.use(bodyParser.json({limit: '50mb'}));
-		appNonSecure.use("/api",routesApi);
+		if (configApi.restrictMode) {
+			appNonSecure.use("/restrict",routesRestrict);
+		}
+		else {
+			appNonSecure.use("/api",routesApi);
+		}
 	}
 	
 	console.log("timeout = " + httpServer.timeout);

@@ -211,6 +211,7 @@ var rangEspSchema = new Schema({
 });
 
 var compagnieSchema = new Schema({
+	storageKey: String,
 	id:			Number,
 	noCie:		Number,
 	noDiv:		Number,
@@ -225,11 +226,16 @@ var clientSchema = new Schema({
 	nom:			String,
 	serialNo:		String,
 	lastPushedDate: String,
-	version : 		String,
-	compagnies:  [compagnieSchema]
+	version : 		String
+	//compagnies:  [compagnieSchema]
 });
 
-module.exports = mongoose.model("Client",clientSchema,"clients");
+module.exports = {
+		
+		clientModel : mongoose.model("Client",clientSchema,"clients"),
+		compagnieModel : mongoose.model("Compagnie",compagnieSchema,"compagnies")
+		};
+
 
 /*
 Définitions:
